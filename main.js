@@ -2,7 +2,8 @@ const s = window.location.search;
 let config = {
   dots: 50,
   min_size: 45,
-  max_size: 100
+  max_size: 100,
+  line_width: 4
 };
 
 if (s) {
@@ -14,6 +15,7 @@ if (s) {
     return memo;
   }, config);
 }
+const LINE_WIDTH = config.line_width;
 const MINIMUM_DOT_SIZE = config.min_size;
 const MAXIMUM_DOT_SIZE = config.max_size;
 const NUMBER_OF_DOTS = config.dots;
@@ -75,6 +77,7 @@ function init() {
     counter += Math.floor(vertices[triangles[i]][3] * 100000000);
     ctx.closePath();
     ctx.strokeStyle = "#fffffe";
+    ctx.lineWidth = LINE_WIDTH;
     ctx.stroke();
     //ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
     console.log(counter);
@@ -83,6 +86,7 @@ function init() {
   }
   for (const vertex of vertices) {
     const [x, y, size] = vertex;
+    ctx.strokeWidth = 0;
     ctx.fillStyle = "#fffffe";
     const radius =
       MINIMUM_DOT_SIZE +
