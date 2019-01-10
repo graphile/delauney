@@ -35,14 +35,26 @@ function init() {
     points.push([Math.random(), Math.random()]);
   }
   */
+  const minDistance = (MAXIMUM_DOT_SIZE / cW) * 1.5;
+  const minDistanceSquared = minDistance * minDistance;
+  function isTooClose(x, y) {
+    for (const point of points) {
+      const distSquared = Math.pow(point[0] - x, 2) + Math.pow(point[1] - y, 2);
+      if (distSquared < minDistanceSquared) return true;
+    }
+    return false;
+  }
   for (let i = NUMBER_OF_DOTS; i--; ) {
     let x, y;
+    let attempts = 0;
     do {
-      x = Math.random() - 0.5;
-      y = Math.random() - 0.5;
-    } while (x * x + y * y > 0.25);
-    x = x * 0.96875 + 0.5;
-    y = y * 0.96875 + 0.5;
+      do {
+        x = Math.random() - 0.5;
+        y = Math.random() - 0.5;
+      } while (x * x + y * y > 0.25);
+      x = x * 0.96875 + 0.5;
+      y = y * 0.96875 + 0.5;
+    } while (isTooClose(x, y) && attempts++ < 50);
     points.push([x, y, Math.random(), Math.random()]);
   }
 
