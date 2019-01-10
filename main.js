@@ -35,7 +35,7 @@ function init() {
     points.push([Math.random(), Math.random()]);
   }
   */
-  const minDistance = (MAXIMUM_DOT_SIZE / cW) * 1.5;
+  const minDistance = (MAXIMUM_DOT_SIZE / cW) * 2 * 1.2;
   const minDistanceSquared = minDistance * minDistance;
   function isTooClose(x, y) {
     for (const point of points) {
