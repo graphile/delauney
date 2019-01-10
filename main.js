@@ -1,26 +1,3 @@
-const s = window.location.search;
-let config = {
-  dots: 50,
-  min_size: 45,
-  max_size: 100,
-  line_width: 4
-};
-
-if (s) {
-  const a = s.replace(/^\?/, "");
-  const b = a.split("&");
-  const o = b.reduce((memo, part) => {
-    const [key, value] = part.split("=");
-    memo[key] = parseFloat(value);
-    return memo;
-  }, config);
-}
-const LINE_WIDTH = config.line_width;
-const MINIMUM_DOT_SIZE = config.min_size;
-const MAXIMUM_DOT_SIZE = config.max_size;
-const NUMBER_OF_DOTS = config.dots;
-const colors = ["#e4ecf4", "#e5f2ff", "#deeaf5", "#dbe3ec", "#"];
-
 function init() {
   const canvas = document.getElementById("canvas");
   canvas.width = window.innerWidth;
@@ -28,6 +5,29 @@ function init() {
   const cW = parseFloat(canvas.width);
   const cH = parseFloat(canvas.height);
   const ctx = canvas.getContext("2d");
+
+  const s = window.location.search;
+  let config = {
+    dots: 50,
+    min_size: cW / 128,
+    max_size: cW / 64,
+    line_width: cW / 720
+  };
+
+  if (s) {
+    const a = s.replace(/^\?/, "");
+    const b = a.split("&");
+    const o = b.reduce((memo, part) => {
+      const [key, value] = part.split("=");
+      memo[key] = parseFloat(value);
+      return memo;
+    }, config);
+  }
+  const LINE_WIDTH = config.line_width;
+  const MINIMUM_DOT_SIZE = config.min_size;
+  const MAXIMUM_DOT_SIZE = config.max_size;
+  const NUMBER_OF_DOTS = config.dots;
+  const colors = ["#e4ecf4", "#e5f2ff", "#deeaf5", "#dbe3ec", "#"];
 
   const points = [];
   /*
@@ -41,8 +41,8 @@ function init() {
       x = Math.random() - 0.5;
       y = Math.random() - 0.5;
     } while (x * x + y * y > 0.25);
-    x = (x * 0.96875 + 0.5) * cW;
-    y = (y * 0.96875 + 0.5) * cH;
+    x = x * 0.96875 + 0.5;
+    y = y * 0.96875 + 0.5;
     points.push([x, y, Math.random(), Math.random()]);
   }
 
@@ -51,8 +51,8 @@ function init() {
     for (let yoff = -1; yoff <= 1; yoff++) {
       for (const point of points) {
         vertices.push([
-          point[0] + xoff * cW,
-          point[1] + yoff * cH,
+          (point[0] + xoff) * cW,
+          (point[1] + yoff) * cH,
           point[2],
           point[3]
         ]);
