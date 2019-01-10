@@ -51,9 +51,9 @@ function init() {
       do {
         x = Math.random() - 0.5;
         y = Math.random() - 0.5;
-      } while (x * x + y * y > 0.25);
-      x = x * 0.96875 + 0.5;
-      y = y * 0.96875 + 0.5;
+      } while (x * x >= 0.25 || y * y >= 0.25);
+      x = x + 0.5;
+      y = y + 0.5;
     } while (isTooClose(x, y) && attempts++ < 50);
     points.push([x, y, Math.random(), Math.random()]);
   }
