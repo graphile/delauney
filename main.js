@@ -1,7 +1,8 @@
 const s = window.location.search;
 let config = {
   dots: 50,
-  min_size: 0.45
+  min_size: 45,
+  max_size: 100
 };
 
 if (s) {
@@ -14,6 +15,7 @@ if (s) {
   }, config);
 }
 const MINIMUM_DOT_SIZE = config.min_size;
+const MAXIMUM_DOT_SIZE = config.max_size;
 const NUMBER_OF_DOTS = config.dots;
 const colors = ["#e4ecf4", "#e5f2ff", "#deeaf5", "#dbe3ec", "#"];
 
@@ -39,12 +41,7 @@ function init() {
     } while (x * x + y * y > 0.25);
     x = (x * 0.96875 + 0.5) * cW;
     y = (y * 0.96875 + 0.5) * cH;
-    points.push([
-      x,
-      y,
-      MINIMUM_DOT_SIZE + (1 - MINIMUM_DOT_SIZE) * Math.random(),
-      Math.random()
-    ]);
+    points.push([x, y, Math.random(), Math.random()]);
   }
 
   const vertices = [];
@@ -87,8 +84,11 @@ function init() {
   for (const vertex of vertices) {
     const [x, y, size] = vertex;
     ctx.fillStyle = "#fffffe";
+    const radius =
+      MINIMUM_DOT_SIZE +
+      (MAXIMUM_DOT_SIZE - MINIMUM_DOT_SIZE) * Math.pow(Math.random(), 1.4);
     ctx.beginPath();
-    ctx.arc(x, y, Math.pow(size, 1.4) * 10, 0, 2 * Math.PI);
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
   }
