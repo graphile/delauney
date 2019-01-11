@@ -1,4 +1,11 @@
 function init() {
+  document.body.onclick = doIt;
+  window.onresize = doIt;
+  document.body.onresize = doIt;
+  doIt();
+}
+
+function doIt() {
   const canvas = document.getElementById("canvas");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
