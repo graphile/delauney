@@ -1,8 +1,25 @@
+// const colors = ["#e4ecf4", "#e5f2ff", "#deeaf5", "#dbe3ec"];
+const colors = [
+  "#e4ecf4",
+  "#e5f2ff",
+  "#deeaf5",
+  "#e4ecf4",
+  "#e5f2ff",
+  "#deeaf5",
+  "#dbe3ec"
+];
 const xmlns = "http://www.w3.org/2000/svg";
 const svgW = 1000;
 const svgH = 1000;
+let svg;
+let canvas;
+let downloadLink;
 function init() {
-  document.body.onclick = doIt;
+  svg = document.getElementById("svg");
+  canvas = document.getElementById("canvas");
+  downloadLink = document.getElementById("a");
+  svg.onclick = doIt;
+  canvas.onclick = doIt;
   window.onresize = doIt;
   document.body.onresize = doIt;
   doIt();
@@ -11,12 +28,10 @@ function init() {
 function doIt() {
   const cW = window.innerWidth;
   const cH = window.innerHeight;
-  const canvas = document.getElementById("canvas");
   canvas.width = cW;
   canvas.height = cH;
   const ctx = canvas.getContext("2d");
 
-  const svg = document.getElementById("svg");
   const svgTriangles = svg.getElementsByClassName("triangles")[0];
   let fc;
   while ((fc = svgTriangles.firstChild)) {
@@ -48,7 +63,6 @@ function doIt() {
   const MINIMUM_DOT_SIZE = config.min_size;
   const MAXIMUM_DOT_SIZE = config.max_size;
   const NUMBER_OF_DOTS = config.dots;
-  const colors = ["#e4ecf4", "#e5f2ff", "#deeaf5", "#dbe3ec"];
 
   const points = [];
   /*
@@ -145,4 +159,14 @@ function doIt() {
     circle.setAttributeNS(null, "fill", "white");
     svgCircles.appendChild(circle);
   }
+
+  const serializer = new XMLSerializer();
+  let source = serializer.serializeToString(svg);
+  source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+  var svgBlob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+  var svgUrl = URL.createObjectURL(svgBlob);
+  downloadLink.href = svgUrl;
+  downloadLink.download = "graphile-delaunay.svg";
 }
+
+function exportSVG() {}
