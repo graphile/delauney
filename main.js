@@ -1,3 +1,6 @@
+const xmlns = "http://www.w3.org/2000/svg";
+const svgW = 1000;
+const svgH = 1000;
 function init() {
   document.body.onclick = doIt;
   window.onresize = doIt;
@@ -6,12 +9,23 @@ function init() {
 }
 
 function doIt() {
+  const cW = window.innerWidth;
+  const cH = window.innerHeight;
   const canvas = document.getElementById("canvas");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const cW = parseFloat(canvas.width);
-  const cH = parseFloat(canvas.height);
+  canvas.width = cW;
+  canvas.height = cH;
   const ctx = canvas.getContext("2d");
+
+  const svg = document.getElementById("svg");
+  const svgTriangles = svg.getElementsByClassName("triangles")[0];
+  let fc;
+  while ((fc = svgTriangles.firstChild)) {
+    svgTriangles.removeChild(fc);
+  }
+  const svgCircles = svg.getElementsByClassName("circles")[0];
+  while ((fc = svgCircles.firstChild)) {
+    svgCircles.removeChild(fc);
+  }
 
   const s = window.location.search;
   let config = {
@@ -34,7 +48,7 @@ function doIt() {
   const MINIMUM_DOT_SIZE = config.min_size;
   const MAXIMUM_DOT_SIZE = config.max_size;
   const NUMBER_OF_DOTS = config.dots;
-  const colors = ["#e4ecf4", "#e5f2ff", "#deeaf5", "#dbe3ec", "#"];
+  const colors = ["#e4ecf4", "#e5f2ff", "#deeaf5", "#dbe3ec"];
 
   const points = [];
   /*
@@ -69,12 +83,7 @@ function doIt() {
   for (let xoff = -1; xoff <= 1; xoff++) {
     for (let yoff = -1; yoff <= 1; yoff++) {
       for (const point of points) {
-        vertices.push([
-          (point[0] + xoff) * cW,
-          (point[1] + yoff) * cH,
-          point[2],
-          point[3]
-        ]);
+        vertices.push([point[0] + xoff, point[1] + yoff, point[2], point[3]]);
       }
     }
   }
@@ -86,14 +95,17 @@ function doIt() {
     let counter = 0;
     ctx.beginPath();
     --i;
-    ctx.moveTo(vertices[triangles[i]][0], vertices[triangles[i]][1]);
-    counter += Math.floor(vertices[triangles[i]][3] * 100000000);
+    const [x1, y1, , r1] = vertices[triangles[i]];
+    ctx.moveTo(x1 * cW, y1 * cH);
+    counter += Math.floor(r1 * 100000000);
     --i;
-    ctx.lineTo(vertices[triangles[i]][0], vertices[triangles[i]][1]);
-    counter += Math.floor(vertices[triangles[i]][3] * 100000000);
+    const [x2, y2, , r2] = vertices[triangles[i]];
+    ctx.lineTo(x2 * cW, y2 * cH);
+    counter += Math.floor(r2 * 100000000);
     --i;
-    ctx.lineTo(vertices[triangles[i]][0], vertices[triangles[i]][1]);
-    counter += Math.floor(vertices[triangles[i]][3] * 100000000);
+    const [x3, y3, , r3] = vertices[triangles[i]];
+    ctx.lineTo(x3 * cW, y3 * cH);
+    counter += Math.floor(r3 * 100000000);
     ctx.closePath();
     ctx.strokeStyle = "#fffffe";
     ctx.lineWidth = LINE_WIDTH;
@@ -102,6 +114,17 @@ function doIt() {
     console.log(counter);
     ctx.fillStyle = colors[counter % colors.length];
     ctx.fill();
+
+    const p = document.createElementNS(xmlns, "polygon");
+    p.setAttributeNS(
+      null,
+      "points",
+      `${x1 * svgW},${y1 * svgH} ${x2 * svgW},${y2 * svgH} ${x3 * svgW},${y3 *
+        svgH}`
+    );
+    p.setAttributeNS(null, "fill", colors[counter % colors.length]);
+    p.setAttributeNS(null, "stroke", "white");
+    svgTriangles.appendChild(p);
   }
   for (const vertex of vertices) {
     const [x, y, size] = vertex;
@@ -111,8 +134,15 @@ function doIt() {
       MINIMUM_DOT_SIZE +
       (MAXIMUM_DOT_SIZE - MINIMUM_DOT_SIZE) * Math.pow(Math.random(), 1.4);
     ctx.beginPath();
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx.arc(x * cW, y * cH, radius, 0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
+
+    const circle = document.createElementNS(xmlns, "circle");
+    circle.setAttributeNS(null, "cx", x * svgW);
+    circle.setAttributeNS(null, "cy", y * svgH);
+    circle.setAttributeNS(null, "r", (radius * svgW) / cW);
+    circle.setAttributeNS(null, "fill", "white");
+    svgCircles.appendChild(circle);
   }
 }

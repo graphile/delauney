@@ -12,12 +12,22 @@
       body {
         margin: 0;
         padding: 0;
-        overflow: hidden;
         outline: 0;
       }
     </style>
   </head>
   <body onload="init()">
-    <canvas id="canvas" style="width: 100%; height: 100%"></canvas>
+    <canvas
+      id="canvas"
+      style="width: 100%; height: 100%; display: none"
+    ></canvas>
+    <svg id="svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+      <desc>PostGraphile Delaunay</desc>
+      <g class="bg">
+        <polygon points="0,0 1000,0 1000,1000 0,1000" fill="#ffffff" />
+      </g>
+      <g class="triangles"></g>
+      <g class="circles"></g>
+    </svg>
   </body>
 </html>
