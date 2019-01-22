@@ -125,7 +125,6 @@ function doIt() {
     ctx.lineWidth = LINE_WIDTH;
     ctx.stroke();
     //ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
-    console.log(counter);
     ctx.fillStyle = colors[counter % colors.length];
     ctx.fill();
 
@@ -141,12 +140,12 @@ function doIt() {
     svgTriangles.appendChild(p);
   }
   for (const vertex of vertices) {
-    const [x, y, size] = vertex;
+    const [x, y, size, radiusRandom] = vertex;
     ctx.strokeWidth = 0;
     ctx.fillStyle = "#fffffe";
     const radius =
       MINIMUM_DOT_SIZE +
-      (MAXIMUM_DOT_SIZE - MINIMUM_DOT_SIZE) * Math.pow(Math.random(), 1.4);
+      (MAXIMUM_DOT_SIZE - MINIMUM_DOT_SIZE) * Math.pow(radiusRandom, 1.4);
     ctx.beginPath();
     ctx.arc(x * cW, y * cH, radius, 0, 2 * Math.PI);
     ctx.closePath();
