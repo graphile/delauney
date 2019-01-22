@@ -20,8 +20,8 @@ function init() {
   downloadLink = document.getElementById("a");
   svg.onclick = doIt;
   canvas.onclick = doIt;
-  window.onresize = doIt;
-  document.body.onresize = doIt;
+  //window.onresize = doIt;
+  //document.body.onresize = doIt;
   doIt();
 }
 
