@@ -1,12 +1,12 @@
 // const colors = ["#e4ecf4", "#e5f2ff", "#deeaf5", "#dbe3ec"];
 const colors = [
-  "#e4ecf4",
-  "#e5f2ff",
-  "#deeaf5",
-  "#e4ecf4",
-  "#e5f2ff",
-  "#deeaf5",
-  "#dbe3ec"
+  "#f1f5f9",
+  "#f2f8fe",
+  "#eef4f9",
+  "#f1f5f9",
+  "#f2f8fe",
+  "#eef4f9",
+  "#edf1f5"
 ];
 const xmlns = "http://www.w3.org/2000/svg";
 const svgW = 1000;
